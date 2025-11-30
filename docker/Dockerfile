@@ -7,9 +7,11 @@ FROM python:3.10-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
 # -----------------------------------------
-# System Dependencies (Tesseract + Poppler)
+# System Dependencies (Tesseract + Poppler + Build tools)
 # -----------------------------------------
 RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
     tesseract-ocr \
     libtesseract-dev \
     poppler-utils \
@@ -30,6 +32,9 @@ WORKDIR /app
 # Copy Requirements
 # -----------------------------------------
 COPY requirements.txt /app/
+
+# Upgrade pip before installing
+RUN pip install --upgrade pip
 
 # -----------------------------------------
 # Install Python Dependencies
