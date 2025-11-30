@@ -1,14 +1,13 @@
-# -----------------------------------------
+# ------------------------------
 # Base Image
-# -----------------------------------------
+# ------------------------------
 FROM python:3.10-slim
 
-# Avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# -----------------------------------------
-# System Dependencies (Tesseract + Poppler + Build tools + Paddle deps)
-# -----------------------------------------
+# ------------------------------
+# System dependencies
+# ------------------------------
 RUN apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
@@ -21,41 +20,39 @@ RUN apt-get update && apt-get install -y \
     git \
     wget \
     libglib2.0-0 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# -----------------------------------------
-# Create App Directory
-# -----------------------------------------
+# ------------------------------
+# Working directory
+# ------------------------------
 WORKDIR /app
 
-# -----------------------------------------
-# Copy Requirements
-# -----------------------------------------
+# ------------------------------
+# Copy requirements
+# ------------------------------
 COPY requirements.txt /app/
 
 # Upgrade pip, setuptools, wheel
 RUN pip install --upgrade pip setuptools wheel
 
-# -----------------------------------------
+# ------------------------------
 # Install PaddlePaddle + PaddleOCR first
-# -----------------------------------------
+# ------------------------------
 RUN pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu
 RUN pip install paddleocr>=3.3.0
 
-# -----------------------------------------
-# Install the rest of the Python dependencies
-# -----------------------------------------
+# ------------------------------
+# Install the rest of the dependencies
+# ------------------------------
 RUN pip install --no-cache-dir -r requirements.txt
 
-# -----------------------------------------
-# Copy Application Code
-# -----------------------------------------
+# ------------------------------
+# Copy app code
+# ------------------------------
 COPY . /app/
 
-# -----------------------------------------
-# Expose & Run
-# -----------------------------------------
+# ------------------------------
+# Expose port and run
+# ------------------------------
 EXPOSE 8000
-
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
