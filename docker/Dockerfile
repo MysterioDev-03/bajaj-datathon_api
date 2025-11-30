@@ -7,7 +7,7 @@ FROM python:3.10-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
 # -----------------------------------------
-# System Dependencies (Tesseract + Poppler + Build tools)
+# System Dependencies (Tesseract + Poppler + Build tools + Paddle deps)
 # -----------------------------------------
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     git \
     wget \
+    libglib2.0-0 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,11 +34,17 @@ WORKDIR /app
 # -----------------------------------------
 COPY requirements.txt /app/
 
-# Upgrade pip before installing
-RUN pip install --upgrade pip
+# Upgrade pip, setuptools, wheel
+RUN pip install --upgrade pip setuptools wheel
 
 # -----------------------------------------
-# Install Python Dependencies
+# Install PaddlePaddle + PaddleOCR first
+# -----------------------------------------
+RUN pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu
+RUN pip install paddleocr>=3.3.0
+
+# -----------------------------------------
+# Install the rest of the Python dependencies
 # -----------------------------------------
 RUN pip install --no-cache-dir -r requirements.txt
 
