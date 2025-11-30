@@ -46,10 +46,8 @@ RUN pip install paddleocr>=3.3.0
 # ------------------------------
 RUN python -c "\
 from paddleocr import PaddleOCR; \
-ocr = PaddleOCR(use_angle_cls=True, lang='en'); \
-import paddlex; \
-paddlex.load_model('PP-LCNet_x1_0_doc_ori'); \
-paddlex.load_model('UVDoc')"
+PaddleOCR(use_angle_cls=True, lang='en'); \
+PaddleOCR(det_model_dir='doc', rec_model_dir='doc')"
 
 # ------------------------------
 # Install the rest of the dependencies
