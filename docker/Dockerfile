@@ -42,6 +42,16 @@ RUN pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/
 RUN pip install paddleocr>=3.3.0
 
 # ------------------------------
+# Pre-download PaddleOCR models
+# ------------------------------
+RUN python -c "\
+from paddleocr import PaddleOCR; \
+ocr = PaddleOCR(use_angle_cls=True, lang='en'); \
+import paddlex; \
+paddlex.load_model('PP-LCNet_x1_0_doc_ori'); \
+paddlex.load_model('UVDoc')"
+
+# ------------------------------
 # Install the rest of the dependencies
 # ------------------------------
 RUN pip install --no-cache-dir -r requirements.txt
@@ -51,8 +61,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # ------------------------------
 COPY . /app/
 
-# Expose port (optional, just for documentation)
+# ------------------------------
+# Expose port
+# ------------------------------
 EXPOSE 8000
 
+# ------------------------------
 # Use dynamic port for Render
-CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
+# ------------------------------
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT}"]
