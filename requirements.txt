@@ -1,0 +1,56 @@
+# --- Core scientific & image libs
+numpy>=1.24,<2.0
+pandas>=2.0,<2.2
+Pillow>=9.5,<10.0
+
+# OpenCV: use headless variant for servers. Keep range to avoid building from source.
+opencv-python-headless>=4.7.0,<5.0
+
+scikit-image>=0.20.0
+scipy>=1.11.0
+
+# --- OCR
+pytesseract>=0.3.11
+
+# Paddle (OPTIONAL - choose CPU/GPU wheel as explained below)
+# If you need PaddleOCR, DO NOT pip install paddlepaddle blindly inside slim image.
+# Use the official paddle index for CPU wheels, e.g.
+# pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu
+# Then:
+# pip install paddleocr
+# For now, comment them out or install in a special image:
+# paddlepaddle==3.2.0
+# paddleocr>=3.3.0
+
+# --- Google Vision OCR
+google-cloud-vision>=3.5.0
+
+# --- PDF Handling
+pdf2image>=1.16.3
+PyPDF2>=3.0.0
+
+# --- Table Detection / YOLO (Ultralytics)
+# Note: ultralytics may pull torch. Prefer installing ultralytics in an environment
+# where you control the torch/cuda versions. You can also use the ultralytics Docker image.
+ultralytics>=8.0.0
+
+# --- ML Helpers
+rapidfuzz>=2.14.0
+
+# --- API / Backend
+fastapi>=0.95.0
+uvicorn[standard]>=0.22.0
+python-multipart>=0.0.6
+
+# --- HTTP & Utilities
+requests>=2.31.0
+tqdm>=4.65.0
+
+# --- LLM Integration
+openai>=1.8.0
+
+# --- Image augmentation (optional)
+imgaug>=0.4.0
+
+# --- Dev / Utilities
+python-dotenv>=1.0.0
