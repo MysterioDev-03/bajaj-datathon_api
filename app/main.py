@@ -1,6 +1,6 @@
 # app/main.py
 import os
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.responses import JSONResponse
 from app.api.extract import process_url_document
 import uvicorn
@@ -10,6 +10,13 @@ app = FastAPI(
     description="OCR + Table Detection + LLM Mapping Pipeline",
     version="1.0.0",
 )
+@app.get("/")
+def health():
+    return {"status": "ok", "message": "BFHL Extractor running"}
+
+@app.head("/")
+def head():
+    return Response(status_code=200)
 
 @app.get("/extract")
 async def extract_get(url: str = Query(..., description="Document URL (PNG/JPG/PDF)")):
