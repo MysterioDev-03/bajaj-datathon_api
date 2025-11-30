@@ -42,12 +42,12 @@ RUN pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/
 RUN pip install paddleocr>=3.3.0
 
 # ------------------------------
-# Pre-download PaddleOCR models
+# Pre-download PaddleOCR official English models
 # ------------------------------
 RUN python -c "\
 from paddleocr import PaddleOCR; \
-PaddleOCR(use_angle_cls=True, lang='en'); \
-PaddleOCR(det_model_dir='doc', rec_model_dir='doc')"
+PaddleOCR(lang='en', use_textline_orientation=True)"
+
 
 # ------------------------------
 # Install the rest of the dependencies
