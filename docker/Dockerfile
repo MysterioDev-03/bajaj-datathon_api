@@ -67,4 +67,4 @@ EXPOSE 8000
 # ------------------------------
 # Use dynamic port for Render
 # ------------------------------
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT}"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
